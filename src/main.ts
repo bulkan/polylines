@@ -5,16 +5,24 @@ import "./style.css";
 const GAP = 10;
 const INNER_GAP = GAP * 10;
 
-const spacing = 20;
+const spacing = 35;
+
+const strokeWeight = 15;
 
 const sketch = function (p: p5) {
-  const drawLineWithAngle = (polygon: p5.Vector[], angle: number) => {
+  const drawHorizontalLine = (polygon: p5.Vector[]) => {
+    const angle = 65;
+
+    // 𝑥=5 cos𝜃,and 𝑦=5 sin𝜃
+    // const xAngle = p.cos(angle);
+    // const yAngle = p.sin(angle);
+
     // Determine the scanline range (minY to maxY)
     let minY = p.min(polygon.map((p) => p.y));
     let maxY = p.max(polygon.map((p) => p.y));
 
     // Iterate through each scanline within the range
-    for (let y = minY + spacing / 2; y < maxY; y += spacing) {
+    for (let y = minY + spacing; y < maxY; y += spacing) {
       let intersections = [];
 
       // Find intersections between the scanline and the polygon edges
@@ -27,7 +35,7 @@ const sketch = function (p: p5) {
 
         // Check if the scanline intersects with this edge
         if ((y1 <= y && y2 >= y) || (y2 <= y && y1 >= y)) {
-          let xIntersect = x1 + ((y - y1) / (y2 - y1)) * (x2 - x1);
+          const xIntersect = x1 + ((y - y1) / (y2 - y1)) * (x2 - x1);
           intersections.push(xIntersect);
         }
       }
@@ -35,8 +43,8 @@ const sketch = function (p: p5) {
       // Sort the intersection points in ascending order
       intersections.sort((a, b) => a - b);
 
-      p.strokeWeight(10);
-      p.stroke("blue");
+      p.stroke("black");
+      p.strokeWeight(strokeWeight);
 
       // Draw lines between pairs of intersection points
       for (let i = 0; i < intersections.length; i += 2) {
@@ -47,22 +55,63 @@ const sketch = function (p: p5) {
     }
   };
 
+  const drawVerticalLine = (polygon: p5.Vector[]) => {
+    // Determine the scanline range (minX to maxX and minY to maxY)
+    let minX = p.min(polygon.map((p) => p.x));
+    // let minY = p.min(polygon.map((p) => p.y));
+
+    // Iterate through each scanline within the range
+    for (let x = minX + spacing / 2; x < p.width; x += spacing) {
+      let intersections = [];
+
+      // Find intersections between the scanline and the polygon edges
+      for (let i = 0; i < polygon.length; i++) {
+        let j = (i + 1) % polygon.length;
+        let x1 = polygon[i].x;
+        let y1 = polygon[i].y;
+        let x2 = polygon[j].x;
+        let y2 = polygon[j].y;
+
+        // Check if the scanline intersects with this edge
+        if ((x1 <= x && x2 >= x) || (x2 <= x && x1 >= x)) {
+          // Calculate the y-coordinate of the intersection point based on the angle
+          let yIntersect = y1 + ((x - x1) / (x2 - x1)) * (y2 - y1);
+
+          intersections.push({ x, y: yIntersect });
+        }
+      }
+
+      // Sort the intersection points by their y-coordinate
+      intersections.sort((a, b) => a.y - b.y);
+
+      p.strokeWeight(strokeWeight);
+      // p.stroke("");
+
+      // Draw lines between pairs of intersection points
+      for (let i = 0; i < intersections.length; i += 2) {
+        let p1 = intersections[i];
+        let p2 = intersections[i + 1];
+        p.line(p1.x, p1.y, p2.x, p2.y);
+      }
+    }
+  };
+
   p.setup = function () {
     p.createCanvas(p.windowWidth, p.windowHeight);
     p.background("white");
     p.angleMode(p.RADIANS);
 
-    // const vertices: Array<Delaunay.Point> = range(5).map(() => [
+    // const vertices: Array<Delaunay.Point> = range(35).map(() => [
     //   p.random(p.width + GAP),
     //   p.random(p.height + GAP),
     // ]);
 
     const vertices: Delaunay.Point[] = [
-      [1197.102094948968, 514.4798064718212],
-      [685.948890478042, 645.706104951586],
-      [475.55274776576954, 134.6172939223823],
-      [639.5734835103027, 1172.9486450146835],
-      [199.21034630902588, 704.8478800026426],
+      [622.0824949284857, 569.5759096879713],
+      [996.0801818424301, 958.261973126669],
+      [375.33364111569836, 806.5359594036025],
+      [1247.4767304552486, 283.24008668112265],
+      [953.718064967969, 1189.9132967561777],
     ];
 
     let delaunay = Delaunay.from(vertices);
@@ -77,7 +126,7 @@ const sketch = function (p: p5) {
     const voronoi = delaunay.voronoi(bounds);
 
     p.stroke("black");
-    p.strokeWeight(20);
+    p.strokeWeight(strokeWeight);
 
     p.rect(GAP, GAP, p.width - GAP * 2, p.height - GAP * 2);
     p.rect(
@@ -92,12 +141,9 @@ const sketch = function (p: p5) {
     for (let polygon of voronoi.cellPolygons()) {
       const area = -polygonArea(polygon);
       // console.log(area);
-      if (area < 15000) {
+      if (area < 20000) {
         for (let vertex of polygon) {
           const pointIndex = delaunay.find(vertex[0], vertex[1]);
-
-          // @ts-ignore
-          // delaunay.points[pointIndex] = null;
           vertices.splice(pointIndex, 1);
         }
       }
@@ -106,20 +152,22 @@ const sketch = function (p: p5) {
     const updatedVoronoi = Delaunay.from(vertices).voronoi(bounds);
 
     for (let polygon of updatedVoronoi.cellPolygons()) {
-      // const area = -polygonArea(polygon);
-      // console.log(area);
+      const area = -polygonArea(polygon);
+      console.log(area);
       p.beginShape();
-      p.strokeWeight(20);
-      p.stroke("black");
+      p.strokeWeight(strokeWeight);
+      p.stroke("red");
       for (let v of polygon) {
         p.vertex(v[0], v[1]);
       }
       p.endShape(p.CLOSE);
+      p.stroke("black");
 
-      drawLineWithAngle(
-        polygon.map((v) => p.createVector(v[0], v[1])),
-        p.radians(p.random(45, 90))
-      );
+      // if (p.randomGaussian() > 0.5) {
+      // drawVerticalLine(polygon.map((v) => p.createVector(v[0], v[1])));
+      // } else {
+      drawHorizontalLine(polygon.map((v) => p.createVector(v[0], v[1])));
+      // }
     }
   };
 };
