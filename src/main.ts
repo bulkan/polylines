@@ -29,7 +29,7 @@ const sketch = function (p: p5) {
     lineCanvas.angleMode(p.DEGREES);
     lineCanvas.noFill();
     lineCanvas.stroke("black");
-    lineCanvas.rotate(p.random(-90));
+    lineCanvas.rotate(p.random(-90, 0));
     lineCanvas.translate(-w, LINE_SPACING);
 
     lineCanvas.strokeWeight(STROKE_WEIGHT);
