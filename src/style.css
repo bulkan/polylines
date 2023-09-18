@@ -17,5 +17,9 @@
 body {
   margin: 0;
   overflow: hidden;
+  display: grid;
   min-height: 100vh;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
 }

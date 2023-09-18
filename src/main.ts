@@ -2,16 +2,20 @@ import p5 from "p5";
 import { Delaunay, range } from "d3";
 import "./style.css";
 
+// The GAP const is to draw the outer and inner frames
 const GAP = 10;
 const INNER_GAP = GAP * 10;
-const LINE_SPACING = 45;
+
+const LINE_SPACING = 40;
 const STROKE_WEIGHT = 15;
+const WIDTH = 1100;
+const HEIGHT = 1100;
 
 const sketch = function (p: p5) {
+  let aOff = 0;
+
   const drawMaskedLines = (polygon: p5.Vector[]) => {
-    const w = 1500;
-    const h = 1500;
-    const polygonCanvas: p5.Graphics = p.createGraphics(w, h);
+    const polygonCanvas: p5.Graphics = p.createGraphics(WIDTH, HEIGHT);
     polygonCanvas.noFill();
     polygonCanvas.stroke("black");
     polygonCanvas.strokeWeight(STROKE_WEIGHT);
@@ -23,19 +27,20 @@ const sketch = function (p: p5) {
     }
     polygonCanvas.endShape(p.CLOSE);
 
-    const lineCanvas = p.createGraphics(w, h);
+    const lineCanvas = p.createGraphics(WIDTH, HEIGHT);
 
     lineCanvas.rectMode(p.CENTER);
     lineCanvas.angleMode(p.DEGREES);
     lineCanvas.noFill();
     lineCanvas.stroke("black");
-    lineCanvas.rotate(p.random(-90, 0));
-    lineCanvas.translate(-w, LINE_SPACING);
-
+    lineCanvas.rotate(-90 * p.noise(aOff));
+    lineCanvas.translate(-WIDTH, LINE_SPACING);
     lineCanvas.strokeWeight(STROKE_WEIGHT);
 
-    for (let x = 0; x < w * 2; x += LINE_SPACING) {
-      lineCanvas.line(x, 0, x, h * 2);
+    // Draw vertical lines into the lineCanvas where the height is much
+    // more than is needed
+    for (let x = 0; x < WIDTH * 2; x += LINE_SPACING) {
+      lineCanvas.line(x, 0, x, HEIGHT * 2);
     }
 
     // clip the polygon
@@ -61,7 +66,7 @@ const sketch = function (p: p5) {
   };
 
   p.setup = function () {
-    p.createCanvas(p.windowWidth, p.windowHeight);
+    p.createCanvas(WIDTH, HEIGHT);
 
     p.background("white");
     p.angleMode(p.DEGREES);
@@ -119,6 +124,7 @@ const sketch = function (p: p5) {
     // const updatedVoronoi = Delaunay.from(vertices).voronoi(bounds);
 
     for (let polygon of voronoi.cellPolygons()) {
+      aOff += 0.5;
       // const area = -polygonArea(polygon);
       drawMaskedLines(polygon.map(([x, y]) => p.createVector(x, y)));
     }
