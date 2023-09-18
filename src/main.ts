@@ -66,7 +66,12 @@ const sketch = function (p: p5) {
   };
 
   p.setup = function () {
-    p.createCanvas(WIDTH, HEIGHT);
+    console.log(p.windowWidth, p.windowHeight);
+
+    const width = p.windowWidth >= 1274 ? WIDTH : p.windowWidth;
+    const height = p.windowHeight >= 1168 ? HEIGHT : p.windowHeight;
+
+    p.createCanvas(width, height);
 
     p.background("white");
     p.angleMode(p.DEGREES);
