@@ -6,13 +6,17 @@ import "./style.css";
 const GAP = 10;
 const INNER_GAP = GAP * 10;
 
-const LINE_SPACING = 40;
-const STROKE_WEIGHT = 15;
 const WIDTH = 1100;
 const HEIGHT = 1100;
 
 const sketch = function (p: p5) {
   let aOff = 0;
+
+  const canvasWidth = p.windowWidth >= 1274 ? WIDTH : p.windowWidth;
+  const canvasHeight = p.windowHeight >= 1168 ? HEIGHT : p.windowHeight;
+
+  const LINE_SPACING = 40;
+  const STROKE_WEIGHT = p.map(canvasWidth, 0, p.windowWidth, 25, 5);
 
   const drawMaskedLines = (polygon: p5.Vector[]) => {
     const polygonCanvas: p5.Graphics = p.createGraphics(WIDTH, HEIGHT);
@@ -66,12 +70,7 @@ const sketch = function (p: p5) {
   };
 
   p.setup = function () {
-    console.log(p.windowWidth, p.windowHeight);
-
-    const width = p.windowWidth >= 1274 ? WIDTH : p.windowWidth;
-    const height = p.windowHeight >= 1168 ? HEIGHT : p.windowHeight;
-
-    p.createCanvas(width, height);
+    p.createCanvas(canvasWidth, canvasHeight);
 
     p.background("white");
     p.angleMode(p.DEGREES);
