@@ -4,7 +4,7 @@ import "./style.css";
 
 // The GAP const is to draw the outer and inner frames
 const GAP = 10;
-const INNER_GAP = GAP * 10;
+const INNER_GAP = GAP * 5;
 
 const WIDTH = 1100;
 const HEIGHT = 1100;
@@ -16,7 +16,7 @@ const sketch = function (p: p5) {
   const canvasHeight = p.windowHeight >= 1168 ? HEIGHT : p.windowHeight;
 
   const LINE_SPACING = 40;
-  const STROKE_WEIGHT = p.map(canvasWidth, 0, p.windowWidth, 25, 5);
+  const STROKE_WEIGHT = p.map(canvasWidth, 0, p.windowWidth, 25, 1);
 
   const drawMaskedLines = (polygon: p5.Vector[]) => {
     const polygonCanvas: p5.Graphics = p.createGraphics(WIDTH, HEIGHT);
