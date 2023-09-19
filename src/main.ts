@@ -3,8 +3,8 @@ import { Delaunay, range } from "d3";
 import "./style.css";
 
 // The GAP const is to draw the outer and inner frames
-const GAP = 10;
-const INNER_GAP = GAP * 5;
+const GAP = 5;
+const INNER_GAP = GAP * 15;
 
 const WIDTH = 1100;
 const HEIGHT = 1100;
