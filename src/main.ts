@@ -16,7 +16,7 @@ const sketch = function (p: p5) {
   const canvasHeight = p.windowHeight >= 1168 ? HEIGHT : p.windowHeight;
 
   const LINE_SPACING = 40;
-  const STROKE_WEIGHT = p.map(canvasWidth, 0, p.windowWidth, 25, 1);
+  const STROKE_WEIGHT = p.map(canvasWidth, 0, p.windowWidth, 25, 10);
 
   const drawMaskedLines = (polygon: p5.Vector[]) => {
     const polygonCanvas: p5.Graphics = p.createGraphics(WIDTH, HEIGHT);
