@@ -16,7 +16,6 @@
 
 body {
   margin: 0;
-  overflow: hidden;
   grid-template-columns: auto 1fr;
   gap: 1px;
   display: grid;
@@ -43,7 +42,6 @@ body {
 
 /* Styles for the callout card */
 .callout-card {
-
   /* width: 400px; */
   background-color: #f0f0f0;
   border: 1px solid #333;
@@ -79,6 +77,20 @@ body {
   /* Title font size */
   margin-top: 0;
   /* Remove top margin for spacing */
+}
+
+@media (max-width: 767px) {
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .column-1 {
+    margin: 10px;
+    width: 90%;
+  }
 }
 
 #main-canvas {
