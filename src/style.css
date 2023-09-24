@@ -17,9 +17,70 @@
 body {
   margin: 0;
   overflow: hidden;
+  grid-template-columns: auto 1fr;
+  gap: 1px;
   display: grid;
   min-height: 100vh;
   background-color: white;
+}
+
+.column-1 {
+  display: flex;
   justify-content: center;
   align-items: center;
+  width: 400px;
+  padding: 20px;
+  /* border: 1px solid red; */
+}
+
+.column-2 {
+  /* border: 2px solid green; */
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Styles for the callout card */
+.callout-card {
+
+  /* width: 400px; */
+  background-color: #f0f0f0;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  /* margin: 10px 10 10px 0; */
+}
+
+/* Styles for the card content */
+.callout-card p {
+  color: #666;
+  /* Content text color */
+  font-size: 16px;
+  /* Content font size */
+}
+
+/* Style the read more link */
+.callout-card a {
+  text-decoration: none;
+  /* Remove underlines from links */
+  color: #007bff;
+  /* Link color */
+  font-weight: bold;
+  /* Make the link bold */
+}
+
+.callout-card h2 {
+  color: #333;
+  /* Title text color */
+  font-size: 24px;
+  /* Title font size */
+  margin-top: 0;
+  /* Remove top margin for spacing */
+}
+
+#main-canvas {
+  width: 100%;
 }
