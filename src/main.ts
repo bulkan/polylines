@@ -10,7 +10,7 @@ const WIDTH = 1100;
 const HEIGHT = 1100;
 
 const sketch = function (p: p5) {
-  let aOff = 0;
+  // let aOff = 0;
 
   const canvasWidth = p.windowWidth >= 1274 ? WIDTH : p.windowWidth;
   const canvasHeight = p.windowHeight >= 1168 ? HEIGHT : p.windowHeight;
@@ -37,7 +37,7 @@ const sketch = function (p: p5) {
     lineCanvas.angleMode(p.DEGREES);
     lineCanvas.noFill();
     lineCanvas.stroke("black");
-    lineCanvas.rotate(-90 * p.noise(aOff));
+    lineCanvas.rotate(p.random(-45, -90));
     lineCanvas.translate(-WIDTH, LINE_SPACING);
     lineCanvas.strokeWeight(STROKE_WEIGHT);
 
@@ -69,8 +69,17 @@ const sketch = function (p: p5) {
     polygonCanvas.remove();
   };
 
-  p.setup = function () {
-    p.createCanvas(canvasWidth, canvasHeight);
+  p.setup = () => {
+    const canvasElement = document.getElementById("main-canvas");
+
+    const calloutCard: HTMLDivElement | null =
+      document.querySelector(".callout-card");
+    if (calloutCard) {
+      calloutCard.style.visibility = "visible";
+    }
+
+    if (!canvasElement) throw Error("missing canvas");
+    p.createCanvas(canvasWidth, canvasHeight, canvasElement);
 
     p.background("white");
     p.angleMode(p.DEGREES);
@@ -128,7 +137,7 @@ const sketch = function (p: p5) {
     // const updatedVoronoi = Delaunay.from(vertices).voronoi(bounds);
 
     for (let polygon of voronoi.cellPolygons()) {
-      aOff += 0.5;
+      // aOff += 0.5;
       // const area = -polygonArea(polygon);
       drawMaskedLines(polygon.map(([x, y]) => p.createVector(x, y)));
     }
