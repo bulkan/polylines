@@ -93,6 +93,10 @@ body {
   }
 }
 
+.warning { 
+  font-weight: bold;
+}
+
 #main-canvas {
   width: 100%;
 }
